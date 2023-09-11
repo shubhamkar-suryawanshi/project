@@ -10,7 +10,7 @@ import Avatar from '@mui/material/Avatar';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+// import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import profile from '../assets/prof.png';
 
 import { Link } from 'react-router-dom';
@@ -28,11 +28,16 @@ function ResponsiveAppBar() {
   const cartItems = useSelector((store) => store.cart.items);
   // const blogItems = useSelector((store) => store.blog.items);
 
+  const user = JSON.parse(localStorage.getItem('user'));
+  // console.log(user);
+  // console.log(user.user.name);
+
   const handleLogOut = async () => {
     axios
       .get('http://localhost:4000/api/v1/logout')
       .then((res) => {
         console.log(res);
+        JSON.parse(localStorage.removeItem('user'));
       })
       .catch((err) => {
         console.log(err);
@@ -214,9 +219,31 @@ function ResponsiveAppBar() {
           >
             <Box>
               <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Avtar" src={profile} />
-                </IconButton>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: '1rem',
+                  }}
+                >
+                  {user.user.role === 'admin' ? (
+                    <Typography component="span" color="black">
+                      <Link
+                        style={{ textDecoration: 'none', color: '#000' }}
+                        to="/admin"
+                      >
+                        Add Item
+                      </Link>
+                    </Typography>
+                  ) : null}
+                  <Typography component="span" color="black">
+                    {user.user.name}
+                  </Typography>
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt="Avtar" src={profile} />
+                  </IconButton>
+                </Box>
               </Tooltip>
               <Menu
                 sx={{ mt: '45px' }}
@@ -268,6 +295,7 @@ function ResponsiveAppBar() {
                 </List>
               </Menu>
             </Box>
+
             <Box
               sx={{
                 display: 'flex',

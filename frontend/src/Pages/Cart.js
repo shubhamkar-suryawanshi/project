@@ -2,18 +2,22 @@ import React from 'react';
 import { Box, Button, Container, Typography } from '@mui/material';
 import { clearCart } from '../shared/cartSlice';
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import CardActions from '@mui/material/CardActions';
 import plant from '../assets/plant.png';
 
 // RT
 import { useSelector, useDispatch } from 'react-redux';
-import { addItem, getTotal } from '../shared/cartSlice';
+import { addItem } from '../shared/cartSlice';
 
 const Cart = () => {
   const cartItems = useSelector((store) => store.cart.items);
-  const totalPrice = useSelector((state) => state.cart.totalPrice);
+  // const cartLength = useSelector(state => state.cart.items.length);
+
+  const [total, setTotal] = React.useState(0);
+
+  React.useEffect(() => {
+    setTotal(cartItems.reduce((acc, curr) => acc + Number(curr.price), 0));
+  }, [cartItems]);
 
   const dispatch = useDispatch();
 
@@ -93,7 +97,7 @@ const Cart = () => {
       <Box
         sx={{ display: 'flex', flexDirection: 'row-reverse', marginY: '2rem' }}
       >
-        <Typography variant="h6">Total: {totalPrice}</Typography>
+        <Typography variant="h6">Total: {total}</Typography>
       </Box>
       <Box
         sx={{ display: 'flex', flexDirection: 'row-reverse', marginY: '2rem' }}

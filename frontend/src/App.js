@@ -83,10 +83,10 @@ const appRouter = createBrowserRouter([
         path: '/profile',
         element: <Profile />,
       },
-      // {
-      //   path: "restaurant/:resId",
-      //   element: <RestaurantMenu />,
-      // },
+      {
+        path: '/admin',
+        element: <Admin />,
+      },
     ],
   },
   {
@@ -101,10 +101,6 @@ const appRouter = createBrowserRouter([
   {
     path: '/forgot-password',
     element: <ForgotPassword />,
-  },
-  {
-    path: '/admin',
-    element: <Admin />,
   },
 ]);
 

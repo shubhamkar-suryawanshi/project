@@ -11,41 +11,39 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import AuthContext from '../context/AuthProvider';
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const { setAuth } = React.useContext(AuthContext);
   const [allowed, setAllowed] = React.useState(false);
-  const [inputData, setInputData] = React.useState({
-    email: '',
-    password: '',
-  });
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
   const [emailError, setEmailError] = React.useState(false);
   const [passwordError, setPasswordError] = React.useState(false);
+  const [user, setUser] = React.useState();
 
   const handleEmail = (e) => {
-    setInputData({ ...inputData, [e.target.name]: e.target.value });
-    setEmailError(
-      !(inputData.email.includes('.') && inputData.email.includes('@'))
-    );
+    setEmail(e.target.value);
+    setEmailError(!(email.includes('.') && email.includes('@')));
   };
 
   const handlePassword = (e) => {
-    setInputData({ ...inputData, [e.target.name]: e.target.value });
-    setPasswordError(inputData.password.length < 8);
+    setPassword(e.target.value);
+    setPasswordError(password.length < 8);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const user = { email, password };
     await axios
-      .post('http://localhost:4000/api/v1/login', inputData)
+      .post('http://localhost:4000/api/v1/login', user)
       .then((res) => {
-        console.log(res);
-        const accessToken = res?.token;
+        // console.log(res);
+        // const accessToken = res?.data?.token;
+        // console.log(accessToken);
         setAllowed(res.data.success);
-        // setAuth({ email, password, accessToken });
+        setUser(res.data);
+        localStorage.setItem('user', JSON.stringify(res.data));
       })
       .catch((err) => {
         console.log(err);
@@ -81,7 +79,7 @@ export default function SignIn() {
               required
               fullWidth
               sx={{ mt: 3, mb: 2 }}
-              value={inputData.email}
+              value={email}
               id="email"
               label="Email Address"
               name="email"
@@ -93,7 +91,7 @@ export default function SignIn() {
             <TextField
               required
               fullWidth
-              value={inputData.password}
+              value={password}
               name="password"
               label="Password"
               type="password"

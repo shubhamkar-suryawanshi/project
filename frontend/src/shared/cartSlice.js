@@ -17,12 +17,6 @@ const cartSlice = createSlice({
     removeItem: (state, action) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
     },
-    getTotal: (state) => {
-      let { totalPrice } = state.items.reduce((total, current) => {
-        return (total = total + current);
-      }, 0);
-      state.totalPrice = parseInt(totalPrice.toFixed(2));
-    },
   },
 });
 

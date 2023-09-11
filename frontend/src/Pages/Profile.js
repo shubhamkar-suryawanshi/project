@@ -2,31 +2,9 @@ import React from 'react';
 import { Container, Box, Typography } from '@mui/material';
 import bg from '../assets/bg1.jpg';
 import prof from '../assets/prof.png';
-import axios from 'axios';
-
-// const link = 'http://localhost:4000/api/v1/me';
 
 function Profile() {
-  // const [user, setUser] = useState({});
-
-  // React.useEffect(() => {
-  //   axios.get('http://localhost:4000/api/v1/me').then((res) => {
-  //     console.log(res);
-  //     // setUser(res);
-  //   });
-  // }, []);
-
-  React.useEffect(() => {
-    axios.get('http://localhost:4000/api/v1/me').then((res) => {
-      console.log(res);
-    });
-  }, []);
-
-  // const getUser = async () => {
-  //   const data = await fetch('');
-  //   const json = await data.json();
-  //   console.log(json);
-  // };
+  const user = JSON.parse(localStorage.getItem('user'));
 
   return (
     <Container maxWidth="md">
@@ -59,7 +37,7 @@ function Profile() {
             component="span"
             sx={{ fontWeight: '400' }}
           >
-            Name:
+            Name: {user.user.name}
           </Typography>
         </Box>
 
@@ -69,7 +47,17 @@ function Profile() {
             component="span"
             sx={{ fontWeight: '400' }}
           >
-            Email:
+            Email: {user.user.email}
+          </Typography>
+        </Box>
+
+        <Box sx={{ margin: '1rem' }}>
+          <Typography
+            variant="body1"
+            component="span"
+            sx={{ fontWeight: '400' }}
+          >
+            Role: {user.user.role}
           </Typography>
         </Box>
       </Box>
