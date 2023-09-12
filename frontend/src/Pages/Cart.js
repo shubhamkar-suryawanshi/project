@@ -1,33 +1,25 @@
 import React from 'react';
 import { Box, Button, Container, Typography } from '@mui/material';
-import { clearCart } from '../shared/cartSlice';
+import { clearCart, incrementItem, decrementItem } from '../shared/cartSlice';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import plant from '../assets/plant.png';
+import DeleteIcon from '@mui/icons-material/Delete';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 // RT
 import { useSelector, useDispatch } from 'react-redux';
-import { addItem } from '../shared/cartSlice';
 
 const Cart = () => {
   const cartItems = useSelector((store) => store.cart.items);
-  // const cartLength = useSelector(state => state.cart.items.length);
-
-  const [total, setTotal] = React.useState(0);
-
-  React.useEffect(() => {
-    setTotal(cartItems.reduce((acc, curr) => acc + Number(curr.price), 0));
-  }, [cartItems]);
-
   const dispatch = useDispatch();
 
-  const handleClearCart = () => {
-    dispatch(clearCart());
-  };
+  // const [total, setTotal] = React.useState(0);
 
-  const handleAddItem = (item) => {
-    dispatch(addItem(item));
-  };
+  // React.useEffect(() => {
+  //   setTotal(cartItems.reduce((acc, curr) => acc + Number(curr.price), 0));
+  // }, [cartItems]);
 
   return (
     <Container maxWidth="lg">
@@ -39,7 +31,12 @@ const Cart = () => {
         }}
       >
         <Typography variant="h6">Cart Items - {cartItems.length}</Typography>
-        <Button variant="outlined" onClick={handleClearCart} color="error">
+        <Button
+          variant="outlined"
+          onClick={() => dispatch(clearCart())}
+          color="error"
+          disabled={cartItems.length > 0 ? false : true}
+        >
           Clear Cart
         </Button>
       </Box>
@@ -87,18 +84,49 @@ const Cart = () => {
                   ({item.category})
                 </Typography>
               </Box>
+
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Button onClick={() => dispatch(decrementItem(item))}>
+                  <RemoveCircleIcon />
+                </Button>
+
+                <span className="mx-2">{item.itemCount}</span>
+
+                <Button onClick={() => dispatch(incrementItem(item))}>
+                  <AddCircleIcon />
+                </Button>
+              </Box>
+              {/* <Button>
+                <DeleteIcon onClick={() => dispatch(removeItem(item.id))} />
+              </Button> */}
               {/* { setTotalCost((prevCost) => prevCost + {item.price})} */}
-              <Typography>{item.price} Rs./ item</Typography>
+              <Typography> {item.itemCount * item?.price}</Typography>
             </Box>
           </Card>
         );
       })}
 
-      <Box
-        sx={{ display: 'flex', flexDirection: 'row-reverse', marginY: '2rem' }}
-      >
-        <Typography variant="h6">Total: {total}</Typography>
-      </Box>
+      {cartItems.length == 0 ? null : (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row-reverse',
+            marginY: '2rem',
+          }}
+        >
+          Total price: Rs.
+          {cartItems.length &&
+            cartItems
+              .map((item) => item.itemCount * item?.price)
+              .reduce((acc, curr) => acc + curr, 0)}
+        </Box>
+      )}
       <Box
         sx={{ display: 'flex', flexDirection: 'row-reverse', marginY: '2rem' }}
       >

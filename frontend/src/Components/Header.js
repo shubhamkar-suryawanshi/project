@@ -31,7 +31,7 @@ function ResponsiveAppBar() {
   const cartItems = useSelector((store) => store.cart.items);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
-  console.log(isLoggedIn);
+  // console.log(isLoggedIn);
 
   const dispatch = useDispatch();
   // const blogItems = useSelector((store) => store.blog.items);
@@ -44,7 +44,7 @@ function ResponsiveAppBar() {
     axios
       .get('http://localhost:4000/api/v1/logout')
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         dispatch(login(true));
         dispatch(logout(false));
         if (isLoggedIn) {

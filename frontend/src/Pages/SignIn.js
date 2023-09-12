@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { login } from '../shared/authSlice';
+import { login, logout } from '../shared/authSlice';
 
 const defaultTheme = createTheme();
 
@@ -43,12 +43,13 @@ export default function SignIn() {
     await axios
       .post('http://localhost:4000/api/v1/login', user)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         console.log(res.data);
 
         if (res.status == '200') {
           navigate('/');
           dispatch(login(true));
+          dispatch(logout(false));
         }
         setUser(res.data);
         sessionStorage.setItem('user', JSON.stringify(res.data));
