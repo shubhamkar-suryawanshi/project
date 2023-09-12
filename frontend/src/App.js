@@ -23,11 +23,11 @@ import Admin from './Pages/Admin';
 
 function AppLayout() {
   return (
-    <Provider store={store}>
+    <div>
       <Header />
       <Outlet />
       <Footer />
-    </Provider>
+    </div>
   );
 }
 
@@ -107,7 +107,9 @@ const appRouter = createBrowserRouter([
 function App(props) {
   return (
     <div className="App">
-      <RouterProvider router={appRouter} />
+      <Provider store={store}>
+        <RouterProvider router={appRouter} />
+      </Provider>
     </div>
   );
 }

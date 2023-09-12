@@ -3,66 +3,70 @@ import { Container, Box, Typography } from '@mui/material';
 import bg from '../assets/bg1.jpg';
 import prof from '../assets/prof.png';
 
+import { useSelector } from 'react-redux';
+
 function Profile() {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(sessionStorage.getItem('user'));
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   return (
-    <Container maxWidth="md">
-      <Box
-        sx={{
-          textAlign: 'left',
-        }}
-      >
+    isLoggedIn && (
+      <Container maxWidth="md">
         <Box
           sx={{
-            width: '100%',
+            textAlign: 'left',
           }}
         >
-          <img width="100%" src={bg} alt="Background" />
-        </Box>
-        <Box
-          sx={{
-            width: '10%',
-            marginX: 'auto',
-          }}
-        >
-          <img width="100%" src={prof} alt="Logo" />
-        </Box>
-      </Box>
-
-      <Box>
-        <Box sx={{ margin: '1rem' }}>
-          <Typography
-            variant="body1"
-            component="span"
-            sx={{ fontWeight: '400' }}
+          <Box
+            sx={{
+              width: '100%',
+            }}
           >
-            Name: {user.user.name}
-          </Typography>
-        </Box>
-
-        <Box sx={{ margin: '1rem' }}>
-          <Typography
-            variant="body1"
-            component="span"
-            sx={{ fontWeight: '400' }}
+            <img width="100%" src={bg} alt="Background" />
+          </Box>
+          <Box
+            sx={{
+              width: '10%',
+              marginX: 'auto',
+            }}
           >
-            Email: {user.user.email}
-          </Typography>
+            <img width="100%" src={prof} alt="Logo" />
+          </Box>
         </Box>
 
-        <Box sx={{ margin: '1rem' }}>
-          <Typography
-            variant="body1"
-            component="span"
-            sx={{ fontWeight: '400' }}
-          >
-            Role: {user.user.role}
-          </Typography>
-        </Box>
-      </Box>
+        <Box>
+          <Box sx={{ margin: '1rem' }}>
+            <Typography
+              variant="body1"
+              component="span"
+              sx={{ fontWeight: '400' }}
+            >
+              Name: {user.user.name}
+            </Typography>
+          </Box>
 
-      {/* <Button
+          <Box sx={{ margin: '1rem' }}>
+            <Typography
+              variant="body1"
+              component="span"
+              sx={{ fontWeight: '400' }}
+            >
+              Email: {user.user.email}
+            </Typography>
+          </Box>
+
+          <Box sx={{ margin: '1rem' }}>
+            <Typography
+              variant="body1"
+              component="span"
+              sx={{ fontWeight: '400' }}
+            >
+              Role: {user.user.role}
+            </Typography>
+          </Box>
+        </Box>
+
+        {/* <Button
         variant="contained"
         onClick={() => {
           setChanged(!changed);
@@ -70,7 +74,8 @@ function Profile() {
       >
         {changed ? 'Save Profile' : 'Update Profile'}
       </Button> */}
-    </Container>
+      </Container>
+    )
   );
 }
 

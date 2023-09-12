@@ -12,10 +12,11 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 
+import { useNavigate } from 'react-router-dom';
+
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const [allowed, setAllowed] = React.useState(false);
   const [inputData, setInputData] = React.useState({
     name: '',
     email: '',
@@ -24,6 +25,8 @@ export default function SignUp() {
   const [nameError, setNameError] = React.useState(false);
   const [emailError, setEmailError] = React.useState(false);
   const [passwordError, setPasswordError] = React.useState(false);
+
+  const navigate = useNavigate();
 
   const handleName = (e) => {
     setInputData({ ...inputData, [e.target.name]: e.target.value });
@@ -48,7 +51,10 @@ export default function SignUp() {
       .post('http://localhost:4000/api/v1/register', inputData)
       .then((res) => {
         // console.log(res);
-        setAllowed(res.data.success);
+        // console.log(res.status);
+        if (res.status == '201') {
+          navigate('/signin');
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -141,13 +147,7 @@ export default function SignUp() {
               color="success"
               sx={{ mt: 3, mb: 2 }}
             >
-              {allowed ? (
-                <Link to="/" style={{ textDecoration: 'none', color: '#fff' }}>
-                  Sign Up
-                </Link>
-              ) : (
-                'Sign Up'
-              )}
+              Sign Up
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>

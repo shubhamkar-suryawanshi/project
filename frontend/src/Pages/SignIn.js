@@ -11,16 +11,21 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { login } from '../shared/authSlice';
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const [allowed, setAllowed] = React.useState(false);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [emailError, setEmailError] = React.useState(false);
   const [passwordError, setPasswordError] = React.useState(false);
   const [user, setUser] = React.useState();
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -38,12 +43,15 @@ export default function SignIn() {
     await axios
       .post('http://localhost:4000/api/v1/login', user)
       .then((res) => {
-        // console.log(res);
-        // const accessToken = res?.data?.token;
-        // console.log(accessToken);
-        setAllowed(res.data.success);
+        console.log(res);
+        console.log(res.data);
+
+        if (res.status == '200') {
+          navigate('/');
+          dispatch(login(true));
+        }
         setUser(res.data);
-        localStorage.setItem('user', JSON.stringify(res.data));
+        sessionStorage.setItem('user', JSON.stringify(res.data));
       })
       .catch((err) => {
         console.log(err);
@@ -113,13 +121,7 @@ export default function SignIn() {
               color="success"
               sx={{ mt: 3, mb: 2 }}
             >
-              {allowed ? (
-                <Link to="/" style={{ textDecoration: 'none', color: '#fff' }}>
-                  Sign In
-                </Link>
-              ) : (
-                'Sign In'
-              )}
+              Sign In
             </Button>
             <Grid container>
               <Grid item xs>

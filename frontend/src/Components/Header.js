@@ -20,15 +20,23 @@ import Tooltip from '@mui/material/Tooltip';
 import { logo } from '../constants';
 import { useSelector } from 'react-redux';
 import { Button, Typography } from '@mui/material';
+
+import { useDispatch } from 'react-redux';
+import { login, logout } from '../shared/authSlice';
 import axios from 'axios';
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const cartItems = useSelector((store) => store.cart.items);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
+  console.log(isLoggedIn);
+
+  const dispatch = useDispatch();
   // const blogItems = useSelector((store) => store.blog.items);
 
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(sessionStorage.getItem('user'));
   // console.log(user);
   // console.log(user.user.name);
 
@@ -37,7 +45,11 @@ function ResponsiveAppBar() {
       .get('http://localhost:4000/api/v1/logout')
       .then((res) => {
         console.log(res);
-        JSON.parse(localStorage.removeItem('user'));
+        dispatch(login(true));
+        dispatch(logout(false));
+        if (isLoggedIn) {
+          JSON.parse(sessionStorage.removeItem('user'));
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -227,7 +239,7 @@ function ResponsiveAppBar() {
                     gap: '1rem',
                   }}
                 >
-                  {user.user.role === 'admin' ? (
+                  {isLoggedIn && user.user.role === 'admin' ? (
                     <Typography component="span" color="black">
                       <Link
                         style={{ textDecoration: 'none', color: '#000' }}
@@ -238,7 +250,16 @@ function ResponsiveAppBar() {
                     </Typography>
                   ) : null}
                   <Typography component="span" color="black">
-                    {user.user.name}
+                    {!isLoggedIn ? (
+                      <Link
+                        style={{ textDecoration: 'none', color: '#000' }}
+                        to="/signin"
+                      >
+                        Sign In
+                      </Link>
+                    ) : (
+                      user.user.name
+                    )}
                   </Typography>
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar alt="Avtar" src={profile} />
