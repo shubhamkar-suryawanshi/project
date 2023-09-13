@@ -10,19 +10,13 @@ import Avatar from '@mui/material/Avatar';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-// import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import profile from '../assets/prof.png';
-
 import { Link } from 'react-router-dom';
-
 import Tooltip from '@mui/material/Tooltip';
-
 import { logo } from '../constants';
 import { useSelector } from 'react-redux';
 import { Button, Typography } from '@mui/material';
 
-import { useDispatch } from 'react-redux';
-// import { login, logout } from '../shared/authSlice';
 import axios from 'axios';
 import useLogin from '../shared/useLogin';
 
@@ -30,26 +24,16 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const cartItems = useSelector((store) => store.cart.items);
-  // const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-
-  // console.log(isLoggedIn);
   const logged = useLogin();
-
-  // const dispatch = useDispatch();
-  // const blogItems = useSelector((store) => store.blog.items);
 
   const user = JSON.parse(sessionStorage.getItem('user'));
   // console.log(user);
-  // console.log(user.success);
-  // console.log(user.user.name);
 
   const handleLogOut = async () => {
     axios
       .get('http://localhost:4000/api/v1/logout')
       .then((res) => {
-        // console.log(res);
-        // dispatch(login(true));
-        // dispatch(logout(false));
+        console.log(res);
         if (logged) {
           JSON.parse(sessionStorage.removeItem('user'));
         } else {
@@ -336,20 +320,6 @@ function ResponsiveAppBar() {
                 <sup>{cartItems.length}</sup>
               </Typography>
             </Box>
-            {/* <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "flex-start",
-              }}
-            >
-              <Link to="/blog-cart">
-                <FavoriteBorderOutlinedIcon color="success" fontSize="large" />
-              </Link>
-              <Typography component="span" color="black">
-                <sup>{blogItems.length}</sup>
-              </Typography>
-            </Box> */}
           </Box>
         </Toolbar>
       </Container>
