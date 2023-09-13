@@ -24,20 +24,23 @@ import { Button, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { login, logout } from '../shared/authSlice';
 import axios from 'axios';
+import useLogin from '../shared/useLogin';
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const cartItems = useSelector((store) => store.cart.items);
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  // const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   // console.log(isLoggedIn);
+  const logged = useLogin();
 
   const dispatch = useDispatch();
   // const blogItems = useSelector((store) => store.blog.items);
 
   const user = JSON.parse(sessionStorage.getItem('user'));
   // console.log(user);
+  // console.log(user.success);
   // console.log(user.user.name);
 
   const handleLogOut = async () => {
@@ -47,7 +50,7 @@ function ResponsiveAppBar() {
         // console.log(res);
         dispatch(login(true));
         dispatch(logout(false));
-        if (isLoggedIn) {
+        if (logged) {
           JSON.parse(sessionStorage.removeItem('user'));
         }
       })
@@ -239,7 +242,7 @@ function ResponsiveAppBar() {
                     gap: '1rem',
                   }}
                 >
-                  {isLoggedIn && user.user.role === 'admin' ? (
+                  {logged && user.user.role === 'admin' ? (
                     <Typography component="span" color="black">
                       <Link
                         style={{ textDecoration: 'none', color: '#000' }}
@@ -250,7 +253,7 @@ function ResponsiveAppBar() {
                     </Typography>
                   ) : null}
                   <Typography component="span" color="black">
-                    {!isLoggedIn ? (
+                    {!logged ? (
                       <Link
                         style={{ textDecoration: 'none', color: '#000' }}
                         to="/signin"
