@@ -22,7 +22,7 @@ import { useSelector } from 'react-redux';
 import { Button, Typography } from '@mui/material';
 
 import { useDispatch } from 'react-redux';
-import { login, logout } from '../shared/authSlice';
+// import { login, logout } from '../shared/authSlice';
 import axios from 'axios';
 import useLogin from '../shared/useLogin';
 
@@ -35,7 +35,7 @@ function ResponsiveAppBar() {
   // console.log(isLoggedIn);
   const logged = useLogin();
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   // const blogItems = useSelector((store) => store.blog.items);
 
   const user = JSON.parse(sessionStorage.getItem('user'));
@@ -48,10 +48,12 @@ function ResponsiveAppBar() {
       .get('http://localhost:4000/api/v1/logout')
       .then((res) => {
         // console.log(res);
-        dispatch(login(true));
-        dispatch(logout(false));
+        // dispatch(login(true));
+        // dispatch(logout(false));
         if (logged) {
           JSON.parse(sessionStorage.removeItem('user'));
+        } else {
+          console.log('user not yet loggedin');
         }
       })
       .catch((err) => {
@@ -261,7 +263,7 @@ function ResponsiveAppBar() {
                         Sign In
                       </Link>
                     ) : (
-                      user.user.name
+                      user.user.name || 'Sign In'
                     )}
                   </Typography>
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

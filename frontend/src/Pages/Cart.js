@@ -4,10 +4,10 @@ import { clearCart, incrementItem, decrementItem } from '../shared/cartSlice';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import plant from '../assets/plant.png';
-import DeleteIcon from '@mui/icons-material/Delete';
+// import DeleteIcon from '@mui/icons-material/Delete';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-
+import { Link } from 'react-router-dom';
 // RT
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -131,7 +131,12 @@ const Cart = () => {
         sx={{ display: 'flex', flexDirection: 'row-reverse', marginY: '2rem' }}
       >
         <Button variant="contained" color="success">
-          Proceed To Payment
+          <Link
+            to={`/checkout`}
+            style={{ textDecoration: 'none', color: '#fff' }}
+          >
+            Proceed To Payment
+          </Link>
         </Button>
       </Box>
     </Container>

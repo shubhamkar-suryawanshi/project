@@ -11,85 +11,77 @@ import {
 } from '@mui/material';
 
 function Admin() {
-  const [name, setName] = React.useState('');
-  const [description, setDescription] = React.useState('');
-  const [price, setPrice] = React.useState('');
-  const [category, setCategory] = React.useState('');
-  const [rating, setRating] = React.useState('');
-  const [stock, setStock] = React.useState('');
-  const [url, setUrl] = React.useState('');
-  const [public_id, setPublic_id] = React.useState('');
+  // const [name, setName] = React.useState('');
+  // const [description, setDescription] = React.useState('');
+  // const [price, setPrice] = React.useState('');
+  // const [category, setCategory] = React.useState('');
+  // const [rating, setRating] = React.useState('');
+  // const [stock, setStock] = React.useState('');
+  // const [url, setUrl] = React.useState('');
+  // const [public_id, setPublic_id] = React.useState('');
 
   const user = JSON.parse(sessionStorage.getItem('user'));
   const token = user.token;
   // console.log(token);
 
-  // const [inputData, setInputData] = React.useState({
-  //   name: '',
-  //   description: '',
-  //   price: '',
-  //   category: '',
-  //   rating: '',
-  //   // images: {
-  //   //   public_id: '',
-  //   //   url: '',
-  //   // },
-  //   stock: '',
-  // });
+  const [formData, setFormData] = React.useState({
+    name: '',
+    description: '',
+    price: '',
+    category: '',
+    rating: '',
+    // images: {
+    //   public_id: '',
+    //   url: '',
+    // },
+    stock: '',
+  });
 
-  const handleName = (e) => {
-    setName(e.target.value);
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
-
-  const handlePrice = (e) => {
-    setPrice(e.target.value);
-  };
-
-  const handleCategory = (e) => {
-    setCategory(e.target.value);
-  };
-
-  const handleDescription = (e) => {
-    setDescription(e.target.value);
-  };
-
-  const handleRating = (e) => {
-    setRating(e.target.value);
-  };
-
-  const handleStock = (e) => {
-    setStock(e.target.value);
-  };
-
-  const handlepublic_id = (e) => {
-    setPublic_id(e.target.value);
-  };
-
-  const handleurl = (e) => {
-    setUrl(e.target.value);
-  };
+  // const handleChangeImgURL = (e) => {
+  //   setFormData({
+  //     ...formData,
+  //     e.target.images.url : e.target.value,
+  //   });
+  // };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const inputData = {
+
+    const {
       name,
       description,
       price,
       stock,
-      images: {
-        public_id,
-        url,
-      },
+      // images: { public_id, url },
       category,
       rating,
-    };
+    } = formData;
+
     await axios
-      .post('http://localhost:4000/api/v1/admin/product/new', {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      .post(
+        'http://localhost:4000/api/v1/admin/product/new',
+        {
+          name,
+          description,
+          price,
+          stock,
+          // public_id,
+          // url,
+          category,
+          rating,
         },
-        body: JSON.stringify(inputData),
-      })
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((res) => {
         console.log(res);
       })
@@ -115,10 +107,10 @@ function Admin() {
                     variant="outlined"
                     name="name"
                     id="name"
-                    onChange={handleName}
+                    onChange={handleChange}
                     fullWidth
                     required
-                    value={name}
+                    value={formData.name}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -129,9 +121,9 @@ function Admin() {
                     variant="outlined"
                     name="description"
                     id="description"
-                    onChange={handleDescription}
+                    onChange={handleChange}
                     fullWidth
-                    value={description}
+                    value={formData.description}
                   />
                 </Grid>
                 <Grid xs={12} item>
@@ -141,10 +133,10 @@ function Admin() {
                     variant="outlined"
                     name="price"
                     id="price"
-                    onChange={handlePrice}
+                    onChange={handleChange}
                     fullWidth
                     required
-                    value={price}
+                    value={formData.price}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -155,22 +147,22 @@ function Admin() {
                     variant="outlined"
                     name="rating"
                     id="rating"
-                    onChange={handleRating}
+                    onChange={handleChange}
                     fullWidth
-                    value={rating}
+                    value={formData.rating}
                   />
                 </Grid>
-                <Grid xs={12} item>
+                {/* <Grid xs={12} item>
                   <TextField
                     placeholder="Image URL"
                     label="Image URL"
                     variant="outlined"
-                    name="images.url"
-                    id="images.url"
-                    onChange={handleurl}
+                    name="url"
+                    id="url"
+                    onChange={handleChangeImgURL}
                     fullWidth
                     required
-                    value={url}
+                    value={formData.images.url}
                   />
                 </Grid>
                 <Grid xs={12} item>
@@ -178,14 +170,14 @@ function Admin() {
                     placeholder="Image ID"
                     label="Image ID"
                     variant="outlined"
-                    name="images.ID"
-                    id="images.ID"
-                    onChange={handlepublic_id}
+                    name="ID"
+                    id="ID"
+                    onChange={handleChangeImgID}
                     fullWidth
                     required
-                    value={public_id}
+                    value={formData.images.public_id}
                   />
-                </Grid>
+                </Grid> */}
                 <Grid xs={12} item>
                   <TextField
                     placeholder="Number of Items in stock"
@@ -193,10 +185,10 @@ function Admin() {
                     variant="outlined"
                     name="stock"
                     id="stock"
-                    onChange={handleStock}
+                    onChange={handleChange}
                     fullWidth
                     required
-                    value={stock}
+                    value={formData.stock}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -207,10 +199,10 @@ function Admin() {
                     variant="outlined"
                     name="category"
                     id="category"
-                    onChange={handleCategory}
+                    onChange={handleChange}
                     fullWidth
                     required
-                    value={category}
+                    value={formData.category}
                   />
                 </Grid>
 

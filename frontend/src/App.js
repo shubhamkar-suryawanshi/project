@@ -20,6 +20,7 @@ import Privacy from './Pages/Privacy';
 import TandCs from './Pages/TandCs';
 import ForgotPassword from './Pages/ForgotPassword';
 import Admin from './Pages/Admin';
+import Checkout from './Pages/Checkout';
 
 function AppLayout() {
   return (
@@ -86,6 +87,10 @@ const appRouter = createBrowserRouter([
       {
         path: '/admin',
         element: <Admin />,
+      },
+      {
+        path: '/checkout',
+        element: <Checkout />,
       },
     ],
   },
