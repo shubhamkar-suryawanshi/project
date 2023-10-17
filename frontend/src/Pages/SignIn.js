@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthService from '../services/auth.service';
 import Avatar from '@mui/material/Avatar';
@@ -12,9 +12,6 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { login, logout } from '../shared/authSlice';
 
 const defaultTheme = createTheme();
 
@@ -23,10 +20,8 @@ export default function SignIn() {
   const [password, setPassword] = React.useState('');
   const [emailError, setEmailError] = React.useState(false);
   const [passwordError, setPasswordError] = React.useState(false);
-  const [user, setUser] = React.useState();
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -37,29 +32,6 @@ export default function SignIn() {
     setPassword(e.target.value);
     setPasswordError(password.length < 8);
   };
-
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  //   const user = { email, password };
-  //   await axios
-  //     .post('http://localhost:4000/api/v1/login', user)
-  //     .then((res) => {
-  //       // console.log(res);
-  //       console.log(res.data);
-
-  //       if (res.status === '200') {
-  //         navigate('/');
-  //         dispatch(login(true));
-  //         dispatch(logout(false));
-  //       }
-  //       setUser(res.data);
-  //       sessionStorage.setItem('user', JSON.stringify(res.data));
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  //   // console.log(allowed);
-  // };
 
   const handleLogin = async (e) => {
     e.preventDefault();

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import AuthService from '../services/auth.service';
 import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
@@ -12,7 +12,6 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import axios from 'axios';
 
 const defaultTheme = createTheme();
 
@@ -41,23 +40,6 @@ export default function SignUp() {
     setPasswordError(password.length < 8);
   };
 
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  //   await axios
-  //     .post('http://localhost:4000/api/v1/register', inputData)
-  //     .then((res) => {
-  //       // console.log(res);
-  //       // console.log(res.status);
-  //       if (res.status == '201') {
-  //         navigate('/signin');
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  //   // console.log(allowed);
-  // };
-
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
@@ -66,7 +48,6 @@ export default function SignUp() {
           // check for token and user already exists with 200
           //   console.log("Sign up successfully", response);
           navigate('/');
-          window.location.reload();
         },
         (error) => {
           console.log(error);

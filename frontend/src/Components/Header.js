@@ -28,7 +28,6 @@ function ResponsiveAppBar() {
 
   useEffect(() => {
     const user = AuthService.getCurrentUser();
-    console.log(localStorage.getItem('user'));
 
     if (user) {
       setCurrentUser(user);
